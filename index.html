@@ -55,66 +55,21 @@
     <div id="django-url" data-url="{% url 'sn' %}" style="display: none;"></div>
     <div id="myDIV" class="header">
         <h2 style="margin:5px">Thacher Websniff</h2>
-        <input type="text" id="myInput" placeholder="Enter a Supernova..." onkeydown="hotKeys(event)">
-        <span onclick="getInfo()" class="runBtn">Run</span>
+        <input type="text" id="myInput" placeholder="Enter a toDo" onkeydown="hotKeys(event)">
+        <span onclick="add()" class="addBtn">Add</span>
     </div>
     <script>
 
         function hotKeys(event) {
         var x = event.key;
         if (x == "Enter") { 
-            getInfo();
+            add();
         }
         }
-        /*
-        function getInfo(){
-            var inputValue = document.getElementById("myInput").value;
-            localStorage.setItem("inputValue", inputValue);
-            if(inputValue == ""){
-                alert ("Please enter a target");
-            }
-            else{
-                alert ("Running for " + inputValue);
-                window.location.href = "index.html";
-            }
-        }
-        */
-       /*
-        function getInfo() {
-            var inputValue = document.getElementById("myInput").value;
-            localStorage.setItem("inputValue", inputValue);
-            if (inputValue == "") {
-                alert("Please enter a target");
-            } else {
-                // Get the Django-generated URL from the data-url attribute
-                var djangoUrl = document.getElementById("django-url").getAttribute("data-url");
-                //allows time for images to generate
-                alert("Running for " + inputValue);
-                window.location.href = djangoUrl;
-            }
-        }
-        */
 
-        function getInfo() {
+        function add() {
             var inputValue = document.getElementById("myInput").value;
             localStorage.setItem("inputValue", inputValue);
-            if (inputValue == "") {
-                alert("Please enter a target");
-            } else {
-                fetch('/check-file/?filename=' + inputValue)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.file_exists) {
-                        // Get the Django-generated URL from the data-url attribute
-                        var djangoUrl = document.getElementById("django-url").getAttribute("data-url");
-                        //allows time for images to generate
-                        alert("Running for " + inputValue);
-                        window.location.href = djangoUrl;
-                    } else {
-                        alert('File does not exist.');
-                    }
-                });
-            }
         }
 
     </script>
