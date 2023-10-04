@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    * {
+    box-sizing: border-box;
+    }
+    /* Clear floats after the header */
+    .header:after {
+    content: "";
+    display: table;
+    clear: both;
+    }
+    /* Style the input */
+    input {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    width: 75%;
+    padding: 10px;
+    float: left;
+    font-size: 16px;
+    }
+    /* Style the "Run" button */
+    .runBtn {
+    padding: 10px;
+    width: 25%;
+    background: #d9d9d9;
+    color: #555;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 0;
+    }
+    .runBtn:hover {
+    background-color: #bbb;
+    }
+    body {
+    margin: 0;
+    min-width: 250px;
+    }
+    /* Style the header */
+    .header {
+    background-color: #f44336;
+    padding: 30px 40px;
+    color: white;
+    text-align: center;
+    }
+</style>
+</head>
+<body>
+    <div id="django-url" data-url="{% url 'sn' %}" style="display: none;"></div>
+    <div id="myDIV" class="header">
+        <h2 style="margin:5px">Thacher Websniff</h2>
+        <input type="text" id="myInput" placeholder="Enter a Supernova..." onkeydown="hotKeys(event)">
+        <span onclick="getInfo()" class="runBtn">Run</span>
+    </div>
+    <script>
+
+        function hotKeys(event) {
+        var x = event.key;
+        if (x == "Enter") { 
+            getInfo();
+        }
+        }
+        /*
+        function getInfo(){
+            var inputValue = document.getElementById("myInput").value;
+            localStorage.setItem("inputValue", inputValue);
+            if(inputValue == ""){
+                alert ("Please enter a target");
+            }
+            else{
+                alert ("Running for " + inputValue);
+                window.location.href = "index.html";
+            }
+        }
+        */
+       /*
+        function getInfo() {
+            var inputValue = document.getElementById("myInput").value;
+            localStorage.setItem("inputValue", inputValue);
+            if (inputValue == "") {
+                alert("Please enter a target");
+            } else {
+                // Get the Django-generated URL from the data-url attribute
+                var djangoUrl = document.getElementById("django-url").getAttribute("data-url");
+                //allows time for images to generate
+                alert("Running for " + inputValue);
+                window.location.href = djangoUrl;
+            }
+        }
+        */
+
+        function getInfo() {
+            var inputValue = document.getElementById("myInput").value;
+            localStorage.setItem("inputValue", inputValue);
+            if (inputValue == "") {
+                alert("Please enter a target");
+            } else {
+                fetch('/check-file/?filename=' + inputValue)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.file_exists) {
+                        // Get the Django-generated URL from the data-url attribute
+                        var djangoUrl = document.getElementById("django-url").getAttribute("data-url");
+                        //allows time for images to generate
+                        alert("Running for " + inputValue);
+                        window.location.href = djangoUrl;
+                    } else {
+                        alert('File does not exist.');
+                    }
+                });
+            }
+        }
+
+    </script>
+</body>
+</html>
